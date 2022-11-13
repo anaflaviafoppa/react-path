@@ -1,16 +1,15 @@
-import {MouseEventHandler, useState} from 'react';
+import React, {useState} from 'react';
 
-function SimpleCounter() {
-    const [counter, setCounter] = useState(0)
+function DoubleCounter() {
+    const [counter, setCounter] = useState(5)
 
     function decreaseCounter() {
-        setCounter(counter - 1);
+        setCounter(counter / 2);
     }
 
     function increaseCounter() {
-        setCounter(counter + 1);
+        setCounter(counter * 2);
     }
-
 
     return (
         <>
@@ -18,7 +17,7 @@ function SimpleCounter() {
             <p>{counter}</p>
             <button onClick={() => increaseCounter()}>+</button>
         </>
-    )
+    );
 }
 
-export default SimpleCounter;
+export default DoubleCounter;
