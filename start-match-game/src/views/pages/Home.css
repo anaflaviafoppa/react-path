@@ -1,0 +1,10 @@
+.home {
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.home-item {
+    margin: 50px;
+}

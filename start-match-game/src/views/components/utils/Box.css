@@ -1,0 +1,18 @@
+:root {
+    --size-number: 50px;
+}
+
+.box {
+    height: calc(var(--size-number) * 3);
+    width: calc(var(--size-number) * 3);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.box-item {
+    width: var(--size-number);
+    height: var(--size-number);
+    border: 1px solid lightgray;
+    font-weight: bold;
+    font-size: 15px;
+}
