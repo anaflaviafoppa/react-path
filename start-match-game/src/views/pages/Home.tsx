@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import BoxStar from '../components/box-star/BoxStar';
 import BoxNumber from '../components/box-numbers/BoxNumber';
+import './Home.css';
 
 class Home extends Component {
     constructor(props: any) {
@@ -10,9 +11,14 @@ class Home extends Component {
 
     render() {
         return (
-            <div>
-                <BoxStar></BoxStar>
-                <BoxNumber></BoxNumber>
+            <div className="home">
+                <div className="home-item">
+                    <BoxStar></BoxStar>
+                </div>
+                <div className="home-item">
+                    <BoxNumber></BoxNumber>
+                </div>
+
             </div>
         );
     }
