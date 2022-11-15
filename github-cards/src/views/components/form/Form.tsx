@@ -14,6 +14,7 @@ function Form(props: { handleSubmit: (arg0: CardProps) => void; } ) {
         const personEdited: CardProps = person;
         personEdited[targetName] = value;
         setPerson(personEdited);
+
     }
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
