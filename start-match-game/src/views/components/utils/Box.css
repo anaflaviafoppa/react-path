@@ -17,3 +17,8 @@
     font-size: 15px;
     cursor: pointer;
 }
+
+
+.box-item--disabled p {
+    font-color: gray;
+}
