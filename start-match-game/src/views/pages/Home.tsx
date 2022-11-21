@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import BoxStar from '../components/box-star/BoxStar';
 import BoxNumber from '../components/box-numbers/BoxNumber';
 import './Home.css';
+import Timer from '../components/timer/Timer';
 
 class Home extends Component {
     constructor(props: any) {
@@ -11,14 +12,17 @@ class Home extends Component {
 
     render() {
         return (
-            <div className="home">
-                <div className="home-item">
-                    <BoxStar></BoxStar>
+            <div>
+                <h1>Pick 1 or more numbers that sum to the number of stars:</h1>
+                <div  className="home">
+                    <div className="home-item">
+                        <BoxStar></BoxStar>
+                    </div>
+                    <div className="home-item">
+                        <BoxNumber maxNumber={10}></BoxNumber>
+                    </div>
                 </div>
-                <div className="home-item">
-                    <BoxNumber></BoxNumber>
-                </div>
-
+                <Timer maxNumber={10}></Timer>
             </div>
         );
     }
