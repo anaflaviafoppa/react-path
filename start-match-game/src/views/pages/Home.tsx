@@ -7,15 +7,16 @@ import PlayNumber from '../components/box-numbers/PlayNumber';
 import {StatusOfNumber} from '../../utils/constants';
 import PlayAgain from '../components/play-again/PlayAgain';
 
-function Home() {
+function Home(props:any) {
     const [numberOfStars, setNumberOfStars] = useState<number>(random(9, 1));
     const [availableNums, setAvailableNums] = useState<number[]>(range(9,1));
     const [candidateNums, setCandidateNums] = useState<number[]>([]);
     const [secondsLeft, setSecondsLeft] = useState<number>(10);
     const isCandidatesAreWrong = sum(candidateNums) > numberOfStars;
+    const isTheGameWasDone = secondsLeft <= 0 || availableNums.length === 0;
 
     useEffect(() => {
-        if(secondsLeft <= 0) {
+        if(isTheGameWasDone) {
             return;
         }
 
@@ -43,7 +44,7 @@ function Home() {
     }
 
     const numberOnClick = (playNumber: number, status: string) => {
-        if(status === StatusOfNumber.USED) {
+        if(status === StatusOfNumber.USED || isTheGameWasDone) {
             return;
         }
 
@@ -73,17 +74,10 @@ function Home() {
            })
     };
 
-    const reStartTheGame = () => {
-        setNumberOfStars(random(9,0));
-        setAvailableNums(range(9,0));
-        setCandidateNums([]);
-
-    }
-
     const starSession = () => {
         const isWinnerGame = availableNums.length === 0 && secondsLeft > 0;
         if(availableNums.length === 0 || secondsLeft <= 0) {
-            return <PlayAgain onClick={reStartTheGame} isWinnerGame={isWinnerGame}></PlayAgain>
+            return <PlayAgain onClick={() => props.reStartTheGame()} isWinnerGame={isWinnerGame}></PlayAgain>
         }
 
 
