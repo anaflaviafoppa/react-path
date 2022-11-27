@@ -16,7 +16,9 @@ function PlayNumber(props:any) {
        return colors[status];
     }
     return (
-        <div className="box-item" style={{backgroundColor: backgroundColor(props.status)}}>
+        <div className="box-item"
+             onClick={() => props.onClick(props.playNumber, props.status)}
+             style={{backgroundColor: backgroundColor(props.status)}}>
             <p>{props.playNumber}</p>
         </div>
     );
@@ -24,7 +26,8 @@ function PlayNumber(props:any) {
 
 Star.prototype = {
     playNumber: PropTypes.number,
-    status: PropTypes.string
+    status: PropTypes.string,
+    onClick: PropTypes.func
 }
 
 export default PlayNumber;
