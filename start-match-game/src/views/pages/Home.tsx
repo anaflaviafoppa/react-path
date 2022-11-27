@@ -77,12 +77,15 @@ function Home() {
         setNumberOfStars(random(9,0));
         setAvailableNums(range(9,0));
         setCandidateNums([]);
+
     }
 
     const starSession = () => {
-        if(availableNums.length === 0) {
-            return <PlayAgain onClick={reStartTheGame}></PlayAgain>
+        const isWinnerGame = availableNums.length === 0 && secondsLeft > 0;
+        if(availableNums.length === 0 || secondsLeft <= 0) {
+            return <PlayAgain onClick={reStartTheGame} isWinnerGame={isWinnerGame}></PlayAgain>
         }
+
 
         return <Star numberOfStars={numberOfStars}></Star>
     }
