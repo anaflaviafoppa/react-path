@@ -1,18 +1,34 @@
-import React, { useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Star from '../components/box-star/Star';
 import './Home.css';
 import Timer from '../components/timer/Timer';
 import {random, randomSumIm, range, sum} from '../../utils/functions';
 import PlayNumber from '../components/box-numbers/PlayNumber';
 import {StatusOfNumber} from '../../utils/constants';
-import * as util from 'util';
 import PlayAgain from '../components/play-again/PlayAgain';
 
 function Home() {
     const [numberOfStars, setNumberOfStars] = useState<number>(random(9, 1));
     const [availableNums, setAvailableNums] = useState<number[]>(range(9,1));
     const [candidateNums, setCandidateNums] = useState<number[]>([]);
+    const [secondsLeft, setSecondsLeft] = useState<number>(10);
     const isCandidatesAreWrong = sum(candidateNums) > numberOfStars;
+
+    useEffect(() => {
+        if(secondsLeft <= 0) {
+            return;
+        }
+
+       const timerId = decreaseTimer();
+        return () => clearTimeout(timerId);
+    })
+
+    const decreaseTimer = () => {
+        return setTimeout(() => {
+            setSecondsLeft(secondsLeft - 1);
+        }, 1000);
+    }
+
 
     const numberStatus = (playNumber: number): string => {
         if (!availableNums.includes(playNumber)) {
@@ -82,7 +98,7 @@ function Home() {
                     {buildBoxNumber()}
                 </div>
             </div>
-            <Timer maxNumber={10}></Timer>
+            <Timer maxNumber={secondsLeft}></Timer>
         </div>
     );
 
