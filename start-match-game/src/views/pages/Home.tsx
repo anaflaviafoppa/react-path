@@ -7,7 +7,7 @@ import PlayNumber from '../components/box-numbers/PlayNumber';
 import {StatusOfNumber} from '../../utils/constants';
 import PlayAgain from '../components/play-again/PlayAgain';
 
-function Home(props:any) {
+function useHome() {
     const [numberOfStars, setNumberOfStars] = useState<number>(random(9, 1));
     const [availableNums, setAvailableNums] = useState<number[]>(range(9,1));
     const [candidateNums, setCandidateNums] = useState<number[]>([]);
@@ -20,16 +20,35 @@ function Home(props:any) {
             return;
         }
 
-       const timerId = decreaseTimer();
+        const timerId = setTimer();
         return () => clearTimeout(timerId);
-    })
+    });
 
-    const decreaseTimer = () => {
+    const setTimer = () => {
         return setTimeout(() => {
             setSecondsLeft(secondsLeft - 1);
         }, 1000);
     }
 
+    const setGameState = (playNumber: number, status: string) => {
+        const newCandidatesNums = status === StatusOfNumber.AVAILABLE ?
+            candidateNums.concat(playNumber) : candidateNums.filter(cn => cn !== playNumber);
+
+        if (sum(newCandidatesNums) !== numberOfStars) {
+            setCandidateNums(newCandidatesNums);
+        } else {
+            const newAvailableNums: Array<number> = availableNums.filter((n) => !newCandidatesNums.includes(n));
+            setNumberOfStars(randomSumIm(newAvailableNums, 9));
+            setAvailableNums(newAvailableNums);
+            setCandidateNums([]);
+        }
+    };
+
+    return {numberOfStars, availableNums, candidateNums, secondsLeft, isCandidatesAreWrong, isTheGameWasDone, setGameState};
+}
+
+function Home(props:any) {
+    const {numberOfStars, availableNums, candidateNums, secondsLeft, isCandidatesAreWrong, isTheGameWasDone, setGameState} = useHome()
 
     const numberStatus = (playNumber: number): string => {
         if (!availableNums.includes(playNumber)) {
@@ -48,21 +67,7 @@ function Home(props:any) {
             return;
         }
 
-        verifySumOfStars(playNumber, status);
-    }
-
-    const verifySumOfStars = (playNumber: number, status: string) => {
-        const newCandidatesNums = status === StatusOfNumber.AVAILABLE ?
-            candidateNums.concat(playNumber) : candidateNums.filter(cn => cn !== playNumber);
-
-        if (sum(newCandidatesNums) !== numberOfStars) {
-            setCandidateNums(newCandidatesNums);
-        } else {
-            const newAvailableNums: Array<number> = availableNums.filter((n) => !newCandidatesNums.includes(n));
-            setNumberOfStars(randomSumIm(newAvailableNums, 9));
-            setAvailableNums(newAvailableNums);
-            setCandidateNums([]);
-        }
+        setGameState(playNumber, status);
     }
 
     const buildBoxNumber = ()  => {
@@ -74,12 +79,12 @@ function Home(props:any) {
            })
     };
 
+
     const starSession = () => {
         const isWinnerGame = availableNums.length === 0 && secondsLeft > 0;
         if(availableNums.length === 0 || secondsLeft <= 0) {
-            return <PlayAgain onClick={() => props.reStartTheGame()} isWinnerGame={isWinnerGame}></PlayAgain>
+            return <PlayAgain onClick={() => props.restartTheGame()} isWinnerGame={isWinnerGame}></PlayAgain>
         }
-
 
         return <Star numberOfStars={numberOfStars}></Star>
     }
