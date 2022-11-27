@@ -1,0 +1,14 @@
+.home {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.home-item {
+    margin: 50px;
+    height: calc(var(--size-number) * 3);
+    width: calc(var(--size-number) * 3);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
