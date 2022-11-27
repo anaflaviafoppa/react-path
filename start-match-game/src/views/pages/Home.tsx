@@ -6,6 +6,7 @@ import {random, randomSumIm, range, sum} from '../../utils/functions';
 import PlayNumber from '../components/box-numbers/PlayNumber';
 import {StatusOfNumber} from '../../utils/constants';
 import * as util from 'util';
+import PlayAgain from '../components/play-again/PlayAgain';
 
 function Home() {
     const [numberOfStars, setNumberOfStars] = useState<number>(random(9, 1));
@@ -56,12 +57,26 @@ function Home() {
            })
     };
 
+    const reStartTheGame = () => {
+        setNumberOfStars(random(9,0));
+        setAvailableNums(range(9,0));
+        setCandidateNums([]);
+    }
+
+    const starSession = () => {
+        if(availableNums.length === 0) {
+            return <PlayAgain onClick={reStartTheGame}></PlayAgain>
+        }
+
+        return <Star numberOfStars={numberOfStars}></Star>
+    }
+
     return (
         <div>
             <h1>Pick 1 or more numbers that sum to the number of stars:</h1>
             <div className="home">
                 <div className="home-item">
-                    <Star numberOfStars={numberOfStars}></Star>
+                    {starSession()}
                 </div>
                 <div className="home-item">
                     {buildBoxNumber()}
