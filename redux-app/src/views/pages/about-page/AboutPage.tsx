@@ -1,8 +1,13 @@
 import React from 'react';
 
-function AboutPage() {
+const AboutPage = () => {
+
     return (
-        <div>About</div>
+        <>
+            <h2>About</h2>
+            <p>This app uses React!</p>
+        </>
+
     );
 }
 

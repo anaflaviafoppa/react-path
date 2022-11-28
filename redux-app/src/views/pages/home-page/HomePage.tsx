@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-function HomePage() {
+const HomePage = () => {
     return (
         <div className="jumbotron">
             <h1 className="display-4">Pluralsight Administration</h1>
