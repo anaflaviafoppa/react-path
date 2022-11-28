@@ -15,12 +15,19 @@ function Navbar() {
                         isActive ? activeStyle : undefined
                     }>Home</NavLink>
                 </li>
+                {" | "}
                 <li className="nav-item">
                     <NavLink to="/about" className="nav-link px-2 link-dark" style={({ isActive }) =>
                         isActive ? activeStyle : undefined
                     }  >About</NavLink>
                 </li>
-                {/*<li className="nav-item"><a href="#" className="nav-link">Features</a></li>*/}
+                {" | "}
+                <li className="nav-item">
+                    <NavLink to="/courses" className="nav-link px-2 link-dark" style={({ isActive }) =>
+                        isActive ? activeStyle : undefined
+                    }  >Courses</NavLink>
+                </li>
+
             </ul>
         </nav>
     );
