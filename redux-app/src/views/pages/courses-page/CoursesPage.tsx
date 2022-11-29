@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Course} from '../../models/Course';
+import {Course} from '../../../models/Course';
 
 function CoursesPage(props: any) {
     const [course, setCourse] = useState<Course>({title: ''});
