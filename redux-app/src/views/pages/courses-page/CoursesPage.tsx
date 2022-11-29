@@ -1,5 +1,9 @@
 import React, {useState} from 'react';
 import {Course} from '../../../models/Course';
+import {connect} from 'react-redux';
+import {createCourse} from '../../../redux/actions/courseActions';
+import PropTypes from 'prop-types';
+
 
 function CoursesPage(props: any) {
     const [course, setCourse] = useState<Course>({title: ''});
@@ -14,6 +18,17 @@ function CoursesPage(props: any) {
 
     const handleSubmit = (event:any) => {
         event.preventDefault();
+        props.dispatch(createCourse(course))
+    }
+
+    const renderListOfCourses = () => {
+        return props.courses.map((courses: Course, index: number) => {
+            return <div key={index} className="position-relative">
+                <label className="list-group-item py-3 pe-5">
+                    <strong className="fw-semibold">{courses.title}</strong>
+                </label>
+            </div>;
+        });
     }
 
     return (
@@ -27,8 +42,22 @@ function CoursesPage(props: any) {
                 </div>
                 <button type="submit" className="btn btn-primary">Submit</button>
             </form>
+            <section className="list-group list-group-radio d-grid gap-2 border-0 w-auto my-3">
+                {renderListOfCourses()}
+            </section>
         </>
     );
 }
 
-export default CoursesPage;
+function mapStateToProps(state: any, ownProps: any) {
+    return {
+        courses: state.courses
+    }
+}
+
+CoursesPage.prototype = {
+    dispatch: PropTypes.func.isRequired,
+    courses: PropTypes.array.isRequired
+}
+
+export default connect(mapStateToProps)(CoursesPage);
