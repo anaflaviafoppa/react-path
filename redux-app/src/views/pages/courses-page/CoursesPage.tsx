@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {Course} from '../../../models/Course';
 import {connect} from 'react-redux';
-import {createCourse as createCourseAction} from '../../../redux/actions/courseActions';
+import * as courseAction from '../../../redux/actions/courseActions';
 import PropTypes from 'prop-types';
+import bindActionCreators from 'react-redux/es/utils/bindActionCreators';
 
 
 function CoursesPage(props: any) {
@@ -18,7 +19,7 @@ function CoursesPage(props: any) {
 
     const handleSubmit = (event:any) => {
         event.preventDefault();
-        props.createCourse(course);
+        props.actions.createCourse(course);
     }
 
     const renderListOfCourses = () => {
@@ -58,12 +59,12 @@ function mapStateToProps(state: any, ownProps: any) {
 // determines which shares are available in that component:
 function mapDispatchToProps(dispatch: any) {
     return {
-        createCourse: (course: Course) => dispatch(createCourseAction(course))
+        actions: bindActionCreators(courseAction, dispatch)
     }
 }
 
 CoursesPage.prototype = {
-    createCourse: PropTypes.func.isRequired,
+    actions: PropTypes.object.isRequired,
     courses: PropTypes.array.isRequired
 }
 
