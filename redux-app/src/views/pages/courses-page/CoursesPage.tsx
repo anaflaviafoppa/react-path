@@ -1,13 +1,34 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Course} from '../../../models/Course';
 import {connect} from 'react-redux';
-import * as courseAction from '../../../redux/actions/courseActions';
+import * as courseActions from '../../../redux/actions/courseActions';
+import * as authorActions from '../../../redux/actions/authorActions';
 import PropTypes from 'prop-types';
 import bindActionCreators from 'react-redux/es/utils/bindActionCreators';
+import {Link} from 'react-router-dom';
+import {Author} from '../../../models/Author';
+import {AnyAction, Dispatch} from 'redux';
 
 
 function CoursesPage(props: any) {
-    const [course, setCourse] = useState<Course>({title: ''});
+    const [course, setCourse] = useState<Course>({title: '', id: '', category: '', slug: '', authorId: 0});
+
+    useEffect(() => {
+        loadCourses();
+        loadAuthors();
+    }, []);
+
+    const loadCourses = () => {
+        props.courseActions.loadCourses().catch((error?: any) => {
+            console.error(error);
+        });
+    }
+
+    const loadAuthors = () => {
+        props.authorActions.loadAuthors().catch((error?: any) => {
+            console.error(error);
+        });
+    }
 
     const handleOnChange = (event: any) => {
         const newCourse: any = {...course};
@@ -19,16 +40,27 @@ function CoursesPage(props: any) {
 
     const handleSubmit = (event:any) => {
         event.preventDefault();
-        props.actions.createCourse(course);
+        /*props.courseActions.createCourse(course);*/
+    }
+
+    const getAuthorName = (authorId: number):string => {
+       return props.authors?.find((author: Author) => author.id === authorId) || ''
     }
 
     const renderListOfCourses = () => {
-        return props.courses.map((courses: Course, index: number) => {
-            return <div key={index} className="position-relative">
-                <label className="list-group-item py-3 pe-5">
-                    <strong className="fw-semibold">{courses.title}</strong>
-                </label>
-            </div>;
+        return props.courses.map((course: Course, index: number) => {
+
+            return <div  className="position-relative" key={index}>
+                            <Link to={`/course/${course.slug}`}>
+                            <label className="list-group-item py-3 pe-5">
+                                <strong className="fw-semibold ">{course.title}
+                                    <span className="badge bg-secondary mx-3">{course.category}</span>
+                                </strong>
+                                    <p>{course.authorName}</p>
+                            </label>
+                            </Link>
+                        </div>
+                    ;
         });
     }
 
@@ -52,20 +84,27 @@ function CoursesPage(props: any) {
 
 function mapStateToProps(state: any, ownProps: any) {
     return {
-        courses: state.courses
+        courses: state.courses.map((course: Course) => {
+            return {...course,
+                authorName: state.authors.find((author: Author) => author.id === course.authorId).name || ''}
+        }),
+        authors: state.authors
     }
 }
 
 // determines which shares are available in that component:
-function mapDispatchToProps(dispatch: any) {
+function mapDispatchToProps(dispatch: Dispatch<AnyAction>) {
     return {
-        actions: bindActionCreators(courseAction, dispatch)
+        courseActions: bindActionCreators(courseActions, dispatch),
+        authorActions: bindActionCreators(authorActions, dispatch),
     }
 }
 
 CoursesPage.prototype = {
-    actions: PropTypes.object.isRequired,
-    courses: PropTypes.array.isRequired
+    courseActions: PropTypes.object.isRequired,
+    authorActions: PropTypes.object.isRequired,
+    courses: PropTypes.array.isRequired,
+    authors: PropTypes.array.isRequired,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoursesPage);
